@@ -1,0 +1,14 @@
+Create a virtual enviroment: 
+    python -m venv venv
+Install required packages: 
+    pip install -r starrynight.txt
+install a package: 
+    pip install <package name>
+view packages: 
+    pip freeze
+Store packages in starry night file: 
+    pip freeze > starrynight.txt
+Activate virtual enviroment:
+    .\venv\Scripts\Activate.ps1
+Activate Flask Server:
+    flask --app main:app run

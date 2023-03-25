@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color:red;
+    text-align: center;
+}
+
+body {
+    background-color:limegreen
+}
+
+nav {
+    text-align: right;
+    background-color: black;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-family: roboto;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    margin-right: 20px;
+}

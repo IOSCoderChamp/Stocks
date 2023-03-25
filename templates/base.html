@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="widthh=device-width, initial-scale=1" />
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+        
+        <title>Capitalist.io</title>
+    </head>
+    <body>
+        <nav>
+            <a href="/" id="link1">Home</a>
+            <a href="/login" id="link2">Login</a>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
