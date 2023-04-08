@@ -11,8 +11,12 @@
     <body>
         <nav>
             <a href="/" id="link1">Home</a>
-            <a href="/login" id="link2">Login</a>
-            <a href="/calculator" id="link3">Calculator</a>
+            {% if username %}
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/login" id="link2">Login</a>
+            {% endif %}
+
         </nav>
         {% block content %}
         {% endblock %}

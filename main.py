@@ -1,22 +1,30 @@
-from flask import Flask, render_template, request
+from flask import *
+import random
 
 app = Flask(__name__)
+app.secret_key =str(random.randbytes(16))
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template('login.html')
+    if request.method == "POST":
+
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username == "DhruvaYeetz" and password == "123456dhruva":
+            session["user"] = username
+            return redirect(url_for("index"))
+        elif username =="FRIENDSHIP POWER" and password == "PFUDOR":
+            session["user"] = username
+            return redirect(url_for("index"))
+
+    return render_template('login.html', username=session.get("user"))
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', username=session.get("user"))
 
-@app.route("/calculator", methods=["GET", "POST"])
-def calc():
-    x = request.form.get('x')
-    y = request.form.get('y')
-    ans = 0
-    if x is not None and y is not None:
-        ans = int(x) + int(y)
-
-
-    return render_template("calc.html", ans=ans)
+@app.route("/logout") 
+def logout():
+    del session["user"]
+    return redirect(url_for("login"))
