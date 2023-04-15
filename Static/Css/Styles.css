@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
@@ -5,24 +9,31 @@
 }
 
 h1 {
-    color:red;
+    padding-top: 20px;
+    font-family: Sedgwick Ave Display;
     text-align: center;
 }
 
-body {
-    background-color:limegreen
+body{
+
 }
 
 nav {
+    display: flex;
     text-align: right;
     background-color: black;
     padding-bottom: 3px;
     padding-top: 3px;
-    font-family: roboto;
+    font-family: Caveat;
 }
 
 a{
     text-decoration: none;
     color: white;
     margin-right: 20px;
+}
+
+#loginform{
+    margin-left: 20px;
+    margin-right: 50px;
 }

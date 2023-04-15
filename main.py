@@ -28,3 +28,11 @@ def index():
 def logout():
     del session["user"]
     return redirect(url_for("login"))
+
+@app.route("/add")
+def add():
+    return render_template('add.html', username=session.get("user"))
+
+@app.route("/account")
+def account():
+    return render_template('account.html', username=session.get("user"))
