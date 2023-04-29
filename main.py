@@ -40,7 +40,7 @@ def login():
 def index():
     return render_template('index.html', username=session.get("user"))
 
-@app.route("/signup", methodse=["GET", "POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         user = User(
