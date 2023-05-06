@@ -3,8 +3,11 @@
 <h1>Home</h1>
 
 <br>
-
-<h2>Welcome User</h2>
+{% if username %}
+    <h2>Welcome {{ username }}</h2>
+{% else %}
+    <h2>Welcome Guest</h2>
+{% endif %}
 
 <h4>Account Value</h4>
 <h4>Today's Change</h4>
