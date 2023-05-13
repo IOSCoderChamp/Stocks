@@ -22,9 +22,21 @@ class User(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
 
+class Stock(db.Model):
 
+    __tablename__ = "stocks"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False) 
+    symbol = db.Column(db.String, unique=True, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
+    user = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
 
+def userstuff():
 
+    userid = session.get("userid")
+    user = db.session.query(User).get(userid)
+    return user
 #app configuration
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -35,13 +47,14 @@ def login():
 
         user = db.session.query(User).filter_by(username=username).first()
         if user and user.password == password:
-            session["username"] = username
+            session["userid"] = username
             return redirect(url_for("index"))
-    return render_template('login.html', username=session.get("username"))
+    return render_template('login.html')
 
 @app.route("/")
 def index():
-    return render_template('index.html', username=session.get("username"))
+    user = userstuff()
+    return render_template('index.html', username=user.username if user else None)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -61,13 +74,16 @@ def signup():
     return render_template("signup.html")
 @app.route("/logout") 
 def logout():
-    del session["username"]
+    user = userstuff()
+    del session[user.username]
     return redirect(url_for("login"))
 
 @app.route("/add")
 def add():
-    return render_template('add.html', username=session.get("username"))
+    user = userstuff()
+    return render_template('add.html', username=user.username if user else "guest")
 
 @app.route("/account")
 def account():
-    return render_template('account.html', username=session.get("username"))
+    user = userstuff()
+    return render_template('account.html', username=user.username if user else "guest")
