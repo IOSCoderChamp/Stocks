@@ -23,32 +23,38 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
 
 class Stock(db.Model):
-
-    __tablename__ = "stocks"
+    
+    __tablename__ = "Stocks"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False) 
     symbol = db.Column(db.String, unique=True, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False, default=1)
-    user = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
+    quantity = db.Column(db.Float, nullable=False, default=1)
+    user = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
 
 def userstuff():
 
     userid = session.get("userid")
     user = db.session.query(User).get(userid)
     return user
+
 #app configuration
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        try:
+            username = request.form.get("username")
+            password = md5(request.form.get("password"))
 
-        username = request.form.get("username")
-        password = md5(request.form.get("password"))
+            user = db.session.query(User).filter_by(username=username).first()
+            if user and user.password == password:
+                session["userid"] = user.id
+                return redirect(url_for("index"))
+            else: 
+                render_template('login.html', error="invalid login")
+        except Exception as error:
+            render_template('login.html', error=error)
 
-        user = db.session.query(User).filter_by(username=username).first()
-        if user and user.password == password:
-            session["userid"] = username
-            return redirect(url_for("index"))
     return render_template('login.html')
 
 @app.route("/")
@@ -78,12 +84,28 @@ def logout():
     del session[user.username]
     return redirect(url_for("login"))
 
-@app.route("/add")
+@app.route("/add",  methods=["GET", "POST"])
 def add():
     user = userstuff()
+    if request.method == "POST":
+        try:
+            name = request.form["name"]
+            Symbol = request.form["symbol"]
+            price = request.form["$"]
+            quantity = request.form["Num"]
+            if name and Symbol and price and quantity and user:
+                e = Stock(name=name, symbol=Symbol, price = price, quantity = quantity, user = user.id)
+                db.session.add(e)
+                db.session.commit()
+                return redirect(url_for("account.html"))
+            else:
+                return render_template("add.html", error="At least one of the fields was left blank")
+        except Exception as error:
+            print("Problem Achieved")
+            print(error)
     return render_template('add.html', username=user.username if user else "guest")
 
-@app.route("/account")
+@app.route("/account",  methods=["GET", "POST"])
 def account():
     user = userstuff()
     return render_template('account.html', username=user.username if user else "guest")
