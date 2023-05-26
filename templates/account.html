@@ -1,4 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Account Details</h1>
+<div class="stocks-panel">
+    <table id="stocks-list">
+            <thead>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>#</th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                {% for row in stocks %}
+                <tr>
+                    <td>{{row.name}}</td>
+                    <td><b>{{row.symbol}}</b></td>
+                    <td>{{row.price}}</td>
+                    <td>{{row.quantity}}</td>
+                    <td>{{"$%0.2f" % (row.price * row.quantity)}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+</div>
 {% endblock %}

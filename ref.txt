@@ -12,3 +12,9 @@ Activate virtual enviroment:
     .\venv\Scripts\Activate.ps1
 Activate Flask Server:
     flask --app main:app run
+Create SQLAlchemy database:
+    flask --app main:app shell
+    >>> with app.app_context():
+    ...     db.create_all()
+    ...
+    >>> quit()

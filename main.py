@@ -26,8 +26,8 @@ class Stock(db.Model):
     
     __tablename__ = "Stocks"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False) 
-    symbol = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, nullable=False) 
+    symbol = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     quantity = db.Column(db.Float, nullable=False, default=1)
     user = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
@@ -37,6 +37,10 @@ def userstuff():
     userid = session.get("userid")
     user = db.session.query(User).get(userid)
     return user
+
+def cu():
+    user = userstuff()
+    return user.username if user else None
 
 #app configuration
 @app.route("/login", methods=["GET", "POST"])
@@ -60,7 +64,7 @@ def login():
 @app.route("/")
 def index():
     user = userstuff()
-    return render_template('index.html', username=user.username if user else None)
+    return render_template('index.html', username=cu())
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -103,9 +107,12 @@ def add():
         except Exception as error:
             print("Problem Achieved")
             print(error)
-    return render_template('add.html', username=user.username if user else "guest")
+    return render_template('add.html', username=cu())
 
-@app.route("/account",  methods=["GET", "POST"])
+
+@app.route("/account")
 def account():
     user = userstuff()
-    return render_template('account.html', username=user.username if user else "guest")
+
+    stocks = db.session.query(Stock).filter_by(user=user.id).all()
+    return render_template("account.html", username=cu(), stocks=stocks)

@@ -33,3 +33,17 @@ a{
     margin-left: 20px;
     margin-right: 50px;
 }
+
+.stocks-panel{
+    margin: 5% 20%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+#stocks-list {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
